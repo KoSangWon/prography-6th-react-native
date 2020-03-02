@@ -29,8 +29,8 @@ export default class Todo extends Component {
                             <Text style={styles.addText}>추가</Text>
                         </TouchableOpacity>
                     </View>
-                    <ScrollView>
-                        <ControlTodo/>
+                    <ScrollView contentContainerStyle={styles.toDos}>
+                        <ControlTodo text="hihellotest"/>
                     </ScrollView>
                 </View>
             </View>
@@ -78,5 +78,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         alignSelf: 'center',
         color: 'white'
+    },
+    toDos: {
+        alignItems: 'center'
     }
 });
