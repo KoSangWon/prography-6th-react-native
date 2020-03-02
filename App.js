@@ -1,19 +1,59 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator} from '@react-navigation/stack';
+
+const Stack = createStackNavigator()
+
+const HomeScreen = ({navigation}) => (
+  <View style={styles.home}>
+    <StatusBar barStyle={"dark-content"}/>
+    <Button 
+      title="To Do List"
+      onPress={() => navigation.navigate('ToDoList')}
+    />
+    <Button 
+      title="Movie"
+      onPress={() => navigation.navigate('Movie')}
+    />
+  </View>
+)
+
+const ToDoScreen = props => (
+  <View style={styles.todo}>
+    <Text>todo화면</Text>
+  </View>
+)
+
+const MovieScreen = props => (
+  <View style={styles.movie}>
+    <Text>movie화면</Text>
+  </View>
+)
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Movie" component={MovieScreen}/>
+        <Stack.Screen name="ToDoList" component={ToDoScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  home: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
+  },
+  movie: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });
+
