@@ -1,27 +1,31 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Todo from './components/Todo'
 
 const Stack = createStackNavigator()
 
 const HomeScreen = ({navigation}) => (
-  <View style={styles.home}>
-    <StatusBar barStyle={"dark-content"}/>
-    <TouchableOpacity style={styles.todoButton} onPress={() => navigation.navigate('ToDoList')}>
-      <Text style={styles.todoText}>To Do List</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.movieButton} onPress={() => navigation.navigate('Movie')}>
-      <Text style={styles.movieText}>Movie</Text>
-    </TouchableOpacity>
-  </View>
+  <LinearGradient colors={["#00C6FB", "#fff333"]} style={styles.container}>
+    <View style={styles.home}>
+      <StatusBar barStyle={"dark-content"}/>
+      <TouchableOpacity style={styles.todoButton} onPress={() => navigation.navigate('ToDoList')}>
+        <Text style={styles.todoText}>To Do List</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.movieButton} onPress={() => navigation.navigate('Movie')}>
+        <Text style={styles.movieText}>Movie</Text>
+      </TouchableOpacity>
+    </View>
+  </LinearGradient>
 )
 
 const ToDoScreen = props => (
   <View style={styles.todo}>
-    <Text>todo화면</Text>
+    <Todo/>
   </View>
 )
 
@@ -44,13 +48,16 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+  },
   home: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
   todoButton:{
-    width: 280,
+    width: 290,
     height: 60,
     backgroundColor: "#ff005d",
     marginBottom: 15,
@@ -64,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   movieButton:{
-    width: 280,
+    width: 290,
     height: 60,
     backgroundColor: "#ff005d",
     marginTop: 15,
@@ -81,13 +88,10 @@ const styles = StyleSheet.create({
   },
   todo:{
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
   },
   movie: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
   },
 });
 
