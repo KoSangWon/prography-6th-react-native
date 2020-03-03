@@ -2,16 +2,28 @@ import React, {Component} from "react";
 import { View, Text, StyleSheet, Dimensions, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TextInput, TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { AppLoading } from "expo"
 import ControlTodo from "./ControlTodo"
+import uuidv1 from "uuid/v1"
 
 const windowWidth = Dimensions.get('window').width;
 
 export default class Todo extends Component {
     state = {
-        newToDo: ""
+        newToDo: "",
+        loadedToDos: false,
+        toDos: {}
+    };
+    componentDidMount = () => {
+        this._loadToDos();
     }
+    
     render() {
-        const {newToDo} = this.state;
+        const {newToDo, loadedToDos, toDos} = this.state;
+        console.log(toDos);
+        if(!loadedToDos){
+            return <AppLoading/>
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.card}>
@@ -24,13 +36,14 @@ export default class Todo extends Component {
                             placeholderTextColor={"#999"}
                             returnKeyType={"done"}
                             autoCorrect={false}
+                            onSubmitEditing={this._addToDo}
                         />
-                        <TouchableOpacity style={styles.addButton}>
+                        <TouchableOpacity style={styles.addButton} onPressOut={this._addToDo}>
                             <Text style={styles.addText}>추가</Text>
                         </TouchableOpacity>
                     </View>
                     <ScrollView contentContainerStyle={styles.toDos}>
-                        <ControlTodo text="hihellotest"/>
+                        {Object.values(toDos).map(toDo => <ControlTodo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo}/>)}
                     </ScrollView>
                 </View>
             </View>
@@ -42,6 +55,51 @@ export default class Todo extends Component {
             newToDo: text
         });
     };
+
+    _loadToDos = () => {
+        this.setState({
+            loadedToDos: true
+        });
+    };
+
+    _addToDo = () => {
+        const {newToDo} = this.state;
+        if(newToDo !== ""){
+            this.setState(prevState => {
+                const ID = uuidv1();
+                const newToDoObject = {
+                    [ID]: {
+                        id: ID,
+                        isCompleted: false,
+                        text: newToDo,
+                        createdAt: Date.now()
+                    }
+                };
+                const newState = {
+                    ...prevState,
+                    newToDo: "",
+                    toDos: {
+                        ...prevState.toDos,
+                        ...newToDoObject
+                    }
+                }
+
+                return {...newState};
+            })
+        }
+    };
+
+    _deleteToDo = (id) => {
+        this.setState(prevState => {
+            const toDos = prevState.toDos;
+            delete toDos[id];
+            const newState = {
+                ...prevState,
+                ...toDos
+            };
+            return {...newState};
+        })
+    }
 }
 
 const styles = StyleSheet.create({
