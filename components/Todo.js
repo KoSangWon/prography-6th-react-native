@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { View, Text, StyleSheet, Dimensions, Platform } from "react-native";
+import { View, Text, StyleSheet, Dimensions, AsyncStorage } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TextInput, TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { AppLoading } from "expo"
@@ -43,7 +43,13 @@ export default class Todo extends Component {
                         </TouchableOpacity>
                     </View>
                     <ScrollView contentContainerStyle={styles.toDos}>
-                        {Object.values(toDos).map(toDo => <ControlTodo key={toDo.id} {...toDo} uncompleteToDo={this._uncompleteToDo} completeToDo={this._completeToDo} deleteToDo={this._deleteToDo} updateToDo={this._updateToDo}/>)}
+                        {Object.values(toDos)
+                        .sort((a, b) => {
+                            const dateA = a.createdAt;
+                            const dateB = b.createdAt;
+                            return dateB - dateA;
+                        })
+                        .map(toDo => <ControlTodo key={toDo.id} {...toDo} uncompleteToDo={this._uncompleteToDo} completeToDo={this._completeToDo} deleteToDo={this._deleteToDo} updateToDo={this._updateToDo}/>)}
                     </ScrollView>
                 </View>
             </View>
@@ -56,10 +62,18 @@ export default class Todo extends Component {
         });
     };
 
-    _loadToDos = () => {
-        this.setState({
-            loadedToDos: true
-        });
+    _loadToDos = async () => {
+        try{
+            const toDos = await AsyncStorage.getItem("toDos");
+            const parsedToDos = JSON.parse(toDos);
+            console.log(toDos);
+            this.setState({
+                loadedToDos: true,
+                toDos: parsedToDos
+            });
+        } catch(err){
+            console.log(err);
+        }
     };
 
     _addToDo = () => {
@@ -83,7 +97,7 @@ export default class Todo extends Component {
                         ...newToDoObject
                     }
                 }
-
+                this._saveToDos(newState.toDos);
                 return {...newState};
             })
         }
@@ -97,6 +111,7 @@ export default class Todo extends Component {
                 ...prevState,
                 ...toDos
             };
+            this._saveToDos(newState.toDos);
             return {...newState};
         });
     };
@@ -113,6 +128,7 @@ export default class Todo extends Component {
                     }
                 }
             }
+            this._saveToDos(newState.toDos);
             return {...newState};
         });
     };
@@ -129,6 +145,7 @@ export default class Todo extends Component {
                     }
                 }
             }
+            this._saveToDos(newState.toDos);
             return {...newState};
         });
     }
@@ -144,9 +161,15 @@ export default class Todo extends Component {
                         text: text
                     }
                 }
-            }
+            };
+            this._saveToDos(newState.toDos);
             return {...newState};
         });
+    }
+
+    _saveToDos = newToDos => {
+        //console.log(JSON.stringify(newToDos));
+        const saveToDos = AsyncStorage.setItem("toDos", JSON.stringify(newToDos));//(key, value)
     }
 }
 
