@@ -43,7 +43,7 @@ export default class Todo extends Component {
                         </TouchableOpacity>
                     </View>
                     <ScrollView contentContainerStyle={styles.toDos}>
-                        {Object.values(toDos).map(toDo => <ControlTodo key={toDo.id} {...toDo} uncompleteToDo={this._uncompleteToDo} completeToDo={this._completeToDo} deleteToDo={this._deleteToDo}/>)}
+                        {Object.values(toDos).map(toDo => <ControlTodo key={toDo.id} {...toDo} uncompleteToDo={this._uncompleteToDo} completeToDo={this._completeToDo} deleteToDo={this._deleteToDo} updateToDo={this._updateToDo}/>)}
                     </ScrollView>
                 </View>
             </View>
@@ -101,7 +101,7 @@ export default class Todo extends Component {
         });
     };
 
-    _uncompleteToDo = (id) => {
+    _uncompleteToDo = id => {
         this.setState(prevState => {
             const newState = {
                 ...prevState,
@@ -117,7 +117,7 @@ export default class Todo extends Component {
         });
     };
 
-    _completeToDo = (id) => {
+    _completeToDo = id => {
         this.setState(prevState => {
             const newState = {
                 ...prevState,
@@ -126,6 +126,22 @@ export default class Todo extends Component {
                     [id]: {
                         ...prevState.toDos[id],
                         isCompleted: true
+                    }
+                }
+            }
+            return {...newState};
+        });
+    }
+
+    _updateToDo = (id, text) => {
+        this.setState(prevState => {
+            const newState = {
+                ...prevState,
+                toDos: {
+                    ...prevState.toDos,
+                    [id]: {
+                        ...prevState.toDos[id],
+                        text: text
                     }
                 }
             }
