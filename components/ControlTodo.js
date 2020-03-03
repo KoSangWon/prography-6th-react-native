@@ -13,16 +13,14 @@ export default class ControlTodo extends React.Component{
         text: propTypes.string.isRequired,
         isCompleted: propTypes.bool.isRequired,
         deleteToDo: propTypes.func.isRequired,
-        id: propTypes.string.isRequired
+        id: propTypes.string.isRequired,
+        uncompleteToDo: propTypes.func.isRequired,
+        completeToDo: propTypes.func.isRequired
     }
-    state = {
-        isEditing: false,
-        isCompleted: false,
-        toDoValue: ""
-    }
+    
     render(){
-        const {isCompleted, isEditing, toDoValue} = this.state;
-        const {text, id, deleteToDo} = this.props;
+        const {isEditing, toDoValue} = this.state;
+        const {text, id, deleteToDo, isCompleted} = this.props;
         return(
                 <View style={styles.column}>
                     <TouchableOpacity style={styles.container} onPress={this._toggleComplete}>
@@ -47,12 +45,12 @@ export default class ControlTodo extends React.Component{
     }
 
     _toggleComplete = () => {
-        this.setState(
-            prevState => {//이전 상태
-                return {
-                    isCompleted: !prevState.isCompleted//누를때마다 값 전환
-                };
-        });
+        const {isCompleted, uncompleteToDo, completeToDo, id} = this.props;
+        if(isCompleted){
+            uncompleteToDo(id)
+        } else {
+            completeToDo(id)
+        }
     }
 
     _startEditing = () => {
