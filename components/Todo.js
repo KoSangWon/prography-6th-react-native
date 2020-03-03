@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import { View, Text, StyleSheet, Dimensions, AsyncStorage } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { TextInput, TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AppLoading } from "expo"
 import ControlTodo from "./ControlTodo"
 import uuidv1 from "uuid/v1"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -42,15 +43,15 @@ export default class Todo extends Component {
                             <Text style={styles.addText}>추가</Text>
                         </TouchableOpacity>
                     </View>
-                    <ScrollView contentContainerStyle={styles.toDos}>
+                    <KeyboardAwareScrollView contentContainerStyle={styles.toDos}>
                         {Object.values(toDos)
                         .sort((a, b) => {
                             const dateA = a.createdAt;
                             const dateB = b.createdAt;
                             return dateB - dateA;
                         })
-                        .map(toDo => <ControlTodo key={toDo.id} {...toDo} uncompleteToDo={this._uncompleteToDo} completeToDo={this._completeToDo} deleteToDo={this._deleteToDo} updateToDo={this._updateToDo}/>)}
-                    </ScrollView>
+                        .reverse().map(toDo => <ControlTodo key={toDo.id} {...toDo} uncompleteToDo={this._uncompleteToDo} completeToDo={this._completeToDo} deleteToDo={this._deleteToDo} updateToDo={this._updateToDo}/>)}
+                    </KeyboardAwareScrollView>
                 </View>
             </View>
         );
@@ -69,7 +70,7 @@ export default class Todo extends Component {
             console.log(toDos);
             this.setState({
                 loadedToDos: true,
-                toDos: parsedToDos
+                toDos: parsedToDos || {}
             });
         } catch(err){
             console.log(err);

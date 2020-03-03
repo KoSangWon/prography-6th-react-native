@@ -5,7 +5,8 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Todo from './components/Todo'
+import Todo from './components/Todo';
+import Movie from './components/Movie';
 
 const Stack = createStackNavigator()
 
@@ -31,7 +32,7 @@ const ToDoScreen = props => (
 
 const MovieScreen = props => (
   <View style={styles.movie}>
-    <Text>movie화면</Text>
+    <Movie/>
   </View>
 )
 

@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput} from "react-native";
 import propTypes from "prop-types";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default class ControlTodo extends React.Component{
     constructor(props){
@@ -26,7 +26,7 @@ export default class ControlTodo extends React.Component{
                 <View style={styles.column}>
                     <TouchableOpacity style={styles.container} onPress={this._toggleComplete}>
                         {isEditing ? (
-                            <TextInput style={[styles.text, styles.input, isCompleted ? styles.completedText : styles.uncompletedText]} value={toDoValue} multiline={true} onChangeText={this._controlInput} returnKeyType={"done"} onBlur={this._finishEditing}/>
+                            <TextInput style={[styles.atext, styles.input, isCompleted ? styles.completedText : styles.uncompletedText]} value={toDoValue} multiline={true} onChangeText={this._controlInput} returnKeyType={"done"} onBlur={this._finishEditing}/>
                         ) : (
                             <Text style={[styles.text, isCompleted ? styles.completedText : styles.uncompletedText]}>{text}</Text>
                         )}
@@ -85,10 +85,17 @@ const styles = StyleSheet.create({
         backgroundColor: "#fcb8d1"
     },
     text: {
-        fontWeight: "600",
+        fontWeight: "500",
         fontSize: 18,
         marginVertical: 20,
         paddingLeft: 20
+    },
+    atext:{
+        fontWeight: "700",
+        color: "#333333",
+        fontSize: 22,
+        marginVertical: 20,
+        paddingLeft: 20,
     },
     completedText: {
         color: "#bbb",
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
     },
     column:{
         flexDirection: "row",
+        height: 60
     },
     completeText: {
         fontWeight: "600",
