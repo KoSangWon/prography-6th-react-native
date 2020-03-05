@@ -31,8 +31,10 @@
 - iOS와 안드로이드(Android) 모두에서 이용이 가능합니다.
 
 
-## 🌐 데모 
-<iframe width="640" height="360" src="https://youtu.be/pocU9P7Wz00" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+## 🌐 데모 URL  
+
+**https://youtu.be/pocU9P7Wz00**
+
 
 ## 아쉬웠던 점 및 개선 목표  
  
